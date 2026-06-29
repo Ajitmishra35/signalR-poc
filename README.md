@@ -105,9 +105,35 @@ flowchart TD
 
 ## Create Azure Infra
 
+Use these steps on your office laptop when you want to run the POC against your office Azure subscription.
+
+Prerequisites:
+
+- Git
+- .NET 8 SDK
+- Node.js 20 LTS or later
+- Azure CLI
+- Access to an Azure subscription where you can create Resource Groups, Storage Accounts, Service Bus, and Azure SignalR Service
+
+Clone and enter the repo:
+
+```bash
+git clone https://github.com/Ajitmishra35/signalR-poc.git
+cd signalR-poc
+```
+
+Login to the office Azure tenant:
+
 ```bash
 az login
-az account set --subscription "<subscription-id>"
+az account list --output table
+az account set --subscription "<office-subscription-id-or-name>"
+az account show --output table
+```
+
+Create Azure resources and generate local config:
+
+```bash
 cd infra
 ./azure-create.sh
 ```
@@ -115,10 +141,14 @@ cd infra
 PowerShell:
 
 ```powershell
-az login
-az account set --subscription "<subscription-id>"
 cd infra
 .\azure-create.ps1
+```
+
+Optional PowerShell parameters:
+
+```powershell
+.\azure-create.ps1 -ResourceGroup "rg-export-signalr-poc" -Location "centralindia"
 ```
 
 The script creates:
@@ -131,6 +161,22 @@ The script creates:
 - Azure SignalR Service in Default mode
 
 It also writes local `appsettings.Development.json` files and `frontend/account-export-ui/.env`.
+
+These generated files contain connection strings, so they are intentionally ignored by Git:
+
+- `backend/src/Export.Api/appsettings.Development.json`
+- `backend/src/Export.Processor/appsettings.Development.json`
+- `backend/src/Export.SignalRAdapter/appsettings.Development.json`
+- `frontend/account-export-ui/.env`
+
+Do not commit or push these generated files.
+
+If your office Azure policy blocks any resource creation, create the same resources manually in the Azure Portal and then set the same local files with:
+
+- Storage connection string in `Export.Api` and `Export.Processor`
+- Service Bus namespace connection string in `Export.Api`, `Export.Processor`, and `Export.SignalRAdapter`
+- Azure SignalR connection string in `Export.SignalRAdapter`
+- Frontend URLs in `frontend/account-export-ui/.env`
 
 ## Run Locally
 
