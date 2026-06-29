@@ -1,0 +1,12 @@
+**/bin/
+**/obj/
+**/node_modules/
+**/dist/
+**/.vs/
+
+backend/src/**/appsettings.Development.json
+frontend/account-export-ui/.env
+
+*.user
+*.suo
+*.log

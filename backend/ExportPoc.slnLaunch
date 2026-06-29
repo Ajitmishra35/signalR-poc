@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "src\\Export.Api\\Export.Api.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      },
+      {
+        "Path": "src\\Export.Processor\\Export.Processor.csproj",
+        "Action": "Start",
+        "DebugTarget": "Export.Processor"
+      },
+      {
+        "Path": "src\\Export.SignalRAdapter\\Export.SignalRAdapter.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      }
+    ]
+  }
+]
